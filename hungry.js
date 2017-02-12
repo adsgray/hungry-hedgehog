@@ -5,27 +5,56 @@ Hungry = {
 
 
 	var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-	var foods = [];
+	var foodobj;
+	var food;
 
-	function init_foods() {
-	    game.load.image('beetle', 'assets/beetlesmall.png');
-	    game.load.image('slug', 'assets/slugsmall.png');
-	    game.load.image('worm', 'assets/wormsmall.png');
-	    game.load.image('frog', 'assets/frogsmall.png');
-	    game.load.image('earwig', 'assets/earwigsmall.png');
+	function init_foods(game) {
 
-	    foods = [
+	    var foods = [
 		'beetle',
 		'slug',
 		'worm',
 		'frog',
 		'earwig',
 	    ];
-	}
 
-	function random_food() {
-	    var item = foods[Math.floor(Math.random()*foods.length)];
-	    return item;
+	    var food = game.add.group();
+	    food.enableBody = true;
+
+	    function random_food() {
+		var item = foods[Math.floor(Math.random()*foods.length)];
+		return item;
+	    }
+
+	    var foodObj = {
+		'random_food': random_food,
+
+		'food_group': foods, // lol
+
+		'random_food_grid': function() {
+		    // size of grid is 9x7
+		    console.log("A");
+		    food.removeAll(true);
+
+		    //  Here we'll create 12 of them evenly spaced apart
+		    for (var i = 0; i < 12; i++)
+		    {
+			console.log("in loop");
+			//  Create a star inside of the 'stars' group
+			var f = food.create(i * 70, 0, random_food());
+			console.log(f);
+			f.scale.setTo(0.5,0.5);
+
+			//  Let gravity do its thing
+			f.body.gravity.y = 7;
+
+			//  This just gives each star a slightly random bounce value
+			f.body.bounce.y = 0.7 + Math.random() * 0.2;
+		    }
+	    }
+	    }
+
+	    return foodObj;
 	}
 
 	function preload() {
@@ -33,7 +62,11 @@ Hungry = {
 	    game.load.image('ground', 'assets/platform.png');
 	    game.load.image('hedgehog', 'assets/hedgehogsmall.png');
 
-	    init_foods();
+	    game.load.image('beetle', 'assets/beetlesmall.png');
+	    game.load.image('slug', 'assets/slugsmall.png');
+	    game.load.image('worm', 'assets/wormsmall.png');
+	    game.load.image('frog', 'assets/frogsmall.png');
+	    game.load.image('earwig', 'assets/earwigsmall.png');
 	}
 
 	function create() {
@@ -59,24 +92,8 @@ Hungry = {
 	    //  Our two animations, walking left and right.
 	    //player.animations.add('left', [0, 1, 2, 3], 10, true);
 	    //player.animations.add('right', [5, 6, 7, 8], 10, true);
-
-	    food = game.add.group();
-
-	    food.enableBody = true;
-
-	    //  Here we'll create 12 of them evenly spaced apart
-	    for (var i = 0; i < 12; i++)
-	    {
-		//  Create a star inside of the 'stars' group
-		var f = food.create(i * 70, 0, random_food());
-		f.scale.setTo(0.5,0.5);
-
-		//  Let gravity do its thing
-		f.body.gravity.y = 7;
-
-		//  This just gives each star a slightly random bounce value
-		f.body.bounce.y = 0.7 + Math.random() * 0.2;
-	    }
+	    foodobj = init_foods(game);
+	    food = foodobj.random_food_grid();
 
 	}
 
