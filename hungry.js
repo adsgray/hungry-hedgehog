@@ -8,6 +8,7 @@ Hungry = {
 	var foodobj;
 	var food;
 	var player_sprite;
+	var shoot_velocity = 250;
 
 	var foods = [
 	    'beetle',
@@ -106,6 +107,7 @@ Hungry = {
 	var food_on_nose = '';
 	var food_on_nose_sprite = null;
 	var next_food = '';
+	var can_shoot = true;
 
 	function make_food_on_nose_sprite() {
 	    x = 385;
@@ -158,11 +160,17 @@ Hungry = {
 		return;
 	    }
 
+	    if (!can_shoot) {
+		return;
+	    }
+
 	    // sprite angles and velocity angles are not the same... must subtract 90 from sprite angle????
-	    game.physics.arcade.velocityFromAngle(food_to_shoot.angle - 90, 200, food_to_shoot.body.velocity);
+	    game.physics.arcade.velocityFromAngle(food_to_shoot.angle - 90, shoot_velocity, food_to_shoot.body.velocity);
 	    console.log(food_to_shoot);
 	    console.log("shooting: " + food_to_shoot);
 	    clear_food_on_nose();
+	    can_shoot = false;
+	    setTimeout(function() { can_shoot = true; }, 2000);
 	}
 
 	function update() {
