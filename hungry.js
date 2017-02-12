@@ -146,6 +146,7 @@ Hungry = {
 		    return;
 		}
 		player.angle -= 1;
+		inc_fons_angle(-1);
 		console.log(player.angle);
 
 	    }
