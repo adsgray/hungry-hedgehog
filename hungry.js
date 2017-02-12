@@ -115,11 +115,10 @@ Hungry = {
 		return;
 	    }
 	    food_on_nose_sprite = game.add.sprite(x, y, food_on_nose);
+	    food_on_nose_sprite.scale.setTo(0.5,0.5);
 	    game.physics.arcade.enable(food_on_nose_sprite);
 	    food_on_nose_sprite.angle = player_sprite.angle;
 	    food_on_nose_sprite.anchor.setTo(0.5, 1.0);
-	    food_on_nose_sprite.scale.setTo(0.5,0.5);
-	    game.physics.arcade.enable(food_on_nose_sprite);
 	    food_on_nose_sprite.body.collideWorldBounds = true;
 	}
 
@@ -152,11 +151,17 @@ Hungry = {
 	}
 
 	function shoot_food() {
-	    var food_to_shoot = food_on_nose;
-	    game.physics.arcade.velocityFromAngle(food_to_shoot.angle, 5, food_to_shoot.velicoty);
+	    var food_to_shoot = food_on_nose_sprite;
+	    if (food_to_shoot == null) {
+		get_next_food();
+		return;
+	    }
+
+	    // sprite angles and velocity angles are not the same... must subtract 90 from sprite angle????
+	    game.physics.arcade.velocityFromAngle(food_to_shoot.angle - 90, 200, food_to_shoot.body.velocity);
+	    console.log(food_to_shoot);
 	    console.log("shooting: " + food_to_shoot);
 	    clear_food_on_nose();
-	    get_next_food();
 	}
 
 	function update() {
@@ -178,7 +183,7 @@ Hungry = {
 		}
 		player.angle -= 1;
 		inc_fons_angle(-1);
-		console.log(player.angle);
+		//console.log(player.angle);
 
 	    }
 	    else if (cursors.right.isDown)
@@ -191,7 +196,7 @@ Hungry = {
 		}
 		player.angle += 1;
 		inc_fons_angle(1);
-		console.log(player.angle);
+		//console.log(player.angle);
 
 	    }
 	    else if (this.spaceKey.isDown) {
