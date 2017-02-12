@@ -8,7 +8,7 @@ Hungry = {
 	var foodobj;
 	var food;
 
-	function init_foods(game) {
+	function init_foods() {
 
 	    var foods = [
 		'beetle',
@@ -93,7 +93,7 @@ Hungry = {
 	    //  Our two animations, walking left and right.
 	    //player.animations.add('left', [0, 1, 2, 3], 10, true);
 	    //player.animations.add('right', [5, 6, 7, 8], 10, true);
-	    foodobj = init_foods(game);
+	    foodobj = init_foods();
 	    food = foodobj.random_food_grid();
 
 	}
