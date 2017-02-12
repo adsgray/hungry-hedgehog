@@ -7,6 +7,7 @@ Hungry = {
 	var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 	var foodobj;
 	var food;
+	var player_sprite;
 
 	var foods = [
 	    'beetle',
@@ -80,6 +81,8 @@ Hungry = {
 
 	    // The player and its settings
 	    player = game.add.sprite(375, game.world.height - 150, 'hedgehog');
+	    // ugh global variable
+	    player_sprite = player;
 	    player.anchor.setTo(0.5, 0.5);
 
 	    //  We need to enable physics on the player
@@ -101,7 +104,29 @@ Hungry = {
 	}
 
 	var food_on_nose = '';
+	var food_on_nose_sprite = null;
 	var next_food = '';
+
+	function make_food_on_nose_sprite() {
+	    x = 385;
+	    y = game.world.height - 90;
+	    if (food_on_nose == '') {
+		console.log("mfons: food_on_nose is empty!");
+		return;
+	    }
+	    food_on_nose_sprite = game.add.sprite(x, y, food_on_nose);
+	    food_on_nose_sprite.angle = player_sprite.angle;
+	    food_on_nose_sprite.anchor.setTo(0.5, 1.0);
+	    food_on_nose_sprite.scale.setTo(0.5,0.5);
+	    game.physics.arcade.enable(food_on_nose_sprite);
+	    food_on_nose_sprite.body.collideWorldBounds = true;
+	}
+
+	function inc_fons_angle(angle) {
+	    if (food_on_nose_sprite != null) {
+		food_on_nose_sprite.angle += angle;
+	    }
+	}
 
 	// place next_food on nose and choose random food for next
 	// first check if food_on_nose is empty though
@@ -115,10 +140,14 @@ Hungry = {
 	    console.log("food_on_nose is now: " + food_on_nose);
 	    next_food = random_food();
 	    console.log("next_food is: " + next_food);
+
+	    make_food_on_nose_sprite();
 	}
 
 	function clear_food_on_nose() {
 	    food_on_nose = '';
+	    //food_on_nose_sprite.destroy();
+	    food_on_nose_sprite = null;
 	}
 
 	function shoot_food() {
@@ -159,6 +188,7 @@ Hungry = {
 		    return;
 		}
 		player.angle += 1;
+		inc_fons_angle(1);
 		console.log(player.angle);
 
 	    }
