@@ -18,7 +18,7 @@ Hungry = {
 		'earwig',
 	    ];
 
-	    var food = game.add.group();
+	    food = game.add.group();
 	    food.enableBody = true;
 
 	    function random_food() {
@@ -28,6 +28,7 @@ Hungry = {
 
 	    var foodObj = {
 		'random_food': random_food,
+		'food': food,
 
 		'food_group': foods, // lol
 
@@ -146,7 +147,7 @@ Hungry = {
 
 	    //game.physics.arcade.collide(stars, platforms);
 
-	    game.physics.arcade.overlap(player, food, collectStar, null, this);
+	    game.physics.arcade.overlap(player, foodobj.food, collectStar, null, this);
 
 
 	}
