@@ -120,6 +120,7 @@ Hungry = {
 	    food_on_nose_sprite.angle = player_sprite.angle;
 	    food_on_nose_sprite.anchor.setTo(0.5, 1.0);
 	    food_on_nose_sprite.body.collideWorldBounds = true;
+	    food_on_nose_sprite.body.bounce.set(0.9);
 	}
 
 	function inc_fons_angle(angle) {
