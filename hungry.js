@@ -93,14 +93,24 @@ Hungry = {
 	    {
 		//  Move to the left
 		//player.body.velocity.x = -150;
-		player.angle += 1;
+		if (player.angle <= -80) {
+		    console.log("ow!");
+		    return;
+		}
+		player.angle -= 1;
+		console.log(player.angle);
 
 	    }
 	    else if (cursors.right.isDown)
 	    {
 		//  Move to the right
 		//player.body.velocity.x = 150;
-		player.angle -= 1;
+		if (player.angle >= 80) {
+		    console.log("ow!");
+		    return;
+		}
+		player.angle += 1;
+		console.log(player.angle);
 
 	    }
 	    else
