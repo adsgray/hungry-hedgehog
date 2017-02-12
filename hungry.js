@@ -22,7 +22,8 @@ Hungry = {
 	    game.add.sprite(0, 0, 'sky');
 
 	    // The player and its settings
-	    player = game.add.sprite(32, game.world.height - 150, 'hedgehog');
+	    player = game.add.sprite(375, game.world.height - 150, 'hedgehog');
+	    player.anchor.setTo(0.5, 0.5);
 
 	    //  We need to enable physics on the player
 	    game.physics.arcade.enable(player);
@@ -67,23 +68,22 @@ Hungry = {
 	    if (cursors.left.isDown)
 	    {
 		//  Move to the left
-		player.body.velocity.x = -150;
+		//player.body.velocity.x = -150;
+		player.angle += 1;
 
-		player.animations.play('left');
 	    }
 	    else if (cursors.right.isDown)
 	    {
 		//  Move to the right
-		player.body.velocity.x = 150;
+		//player.body.velocity.x = 150;
+		player.angle -= 1;
 
-		player.animations.play('right');
 	    }
 	    else
 	    {
 		//  Stand still
 		player.animations.stop();
 
-		player.frame = 4;
 	    }
 
 	    //  Allow the player to jump if they are touching the ground.
