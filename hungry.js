@@ -115,6 +115,7 @@ Hungry = {
 		return;
 	    }
 	    food_on_nose_sprite = game.add.sprite(x, y, food_on_nose);
+	    game.physics.arcade.enable(food_on_nose_sprite);
 	    food_on_nose_sprite.angle = player_sprite.angle;
 	    food_on_nose_sprite.anchor.setTo(0.5, 1.0);
 	    food_on_nose_sprite.scale.setTo(0.5,0.5);
@@ -152,6 +153,7 @@ Hungry = {
 
 	function shoot_food() {
 	    var food_to_shoot = food_on_nose;
+	    game.physics.arcade.velocityFromAngle(food_to_shoot.angle, 5, food_to_shoot.velicoty);
 	    console.log("shooting: " + food_to_shoot);
 	    clear_food_on_nose();
 	    get_next_food();
