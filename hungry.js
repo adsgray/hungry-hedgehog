@@ -9,7 +9,11 @@ Hungry = {
 	function preload() {
 	    game.load.image('sky', 'assets/sky.png');
 	    game.load.image('ground', 'assets/platform.png');
-	    game.load.image('star', 'assets/star.png');
+	    game.load.image('beetle', 'assets/beetlesmall.png');
+	    game.load.image('slug', 'assets/slugsmall.png');
+	    game.load.image('worm', 'assets/wormsmall.png');
+	    game.load.image('frog', 'assets/frogsmall.png');
+	    game.load.image('earwig', 'assets/earwigsmall.png');
 	    game.load.image('hedgehog', 'assets/hedgehogsmall.png');
 	}
 
@@ -37,21 +41,22 @@ Hungry = {
 	    //player.animations.add('left', [0, 1, 2, 3], 10, true);
 	    //player.animations.add('right', [5, 6, 7, 8], 10, true);
 
-	    stars = game.add.group();
+	    food = game.add.group();
 
-	    stars.enableBody = true;
+	    food.enableBody = true;
 
 	    //  Here we'll create 12 of them evenly spaced apart
 	    for (var i = 0; i < 12; i++)
 	    {
 		//  Create a star inside of the 'stars' group
-		var star = stars.create(i * 70, 0, 'star');
+		var beetle = food.create(i * 70, 0, 'earwig');
+		beetle.scale.setTo(0.5,0.5);
 
 		//  Let gravity do its thing
-		star.body.gravity.y = 6;
+		beetle.body.gravity.y = 7;
 
 		//  This just gives each star a slightly random bounce value
-		star.body.bounce.y = 0.7 + Math.random() * 0.2;
+		beetle.body.bounce.y = 0.7 + Math.random() * 0.2;
 	    }
 
 	}
@@ -95,7 +100,7 @@ Hungry = {
 
 	    //game.physics.arcade.collide(stars, platforms);
 
-	    game.physics.arcade.overlap(player, stars, collectStar, null, this);
+	    game.physics.arcade.overlap(player, food, collectStar, null, this);
 
 
 	}
