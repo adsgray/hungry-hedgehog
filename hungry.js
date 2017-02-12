@@ -8,23 +8,23 @@ Hungry = {
 	var foodobj;
 	var food;
 
-	function init_foods() {
+	var foods = [
+	    'beetle',
+	    'slug',
+	    'worm',
+	    'frog',
+	    'earwig',
+	];
 
-	    var foods = [
-		'beetle',
-		'slug',
-		'worm',
-		'frog',
-		'earwig',
-	    ];
+	function random_food() {
+	    var item = foods[Math.floor(Math.random()*foods.length)];
+	    return item;
+	}
+
+	function init_foods() {
 
 	    food = game.add.group();
 	    food.enableBody = true;
-
-	    function random_food() {
-		var item = foods[Math.floor(Math.random()*foods.length)];
-		return item;
-	    }
 
 	    var foodObj = {
 		'random_food': random_food,
@@ -100,6 +100,34 @@ Hungry = {
 
 	}
 
+	var food_on_nose = '';
+	var next_food = '';
+
+	// place next_food on nose and choose random food for next
+	// first check if food_on_nose is empty though
+	function get_next_food() {
+	    if (food_on_nose != '') {
+		console.log("food_on_nose is: " + food_on_nose + ", should be empty!");
+		return;
+	    }
+
+	    food_on_nose = next_food;
+	    console.log("food_on_nose is now: " + food_on_nose);
+	    next_food = random_food();
+	    console.log("next_food is: " + next_food);
+	}
+
+	function clear_food_on_nose() {
+	    food_on_nose = '';
+	}
+
+	function shoot_food() {
+	    var food_to_shoot = food_on_nose;
+	    console.log("shooting: " + food_to_shoot);
+	    clear_food_on_nose();
+	    get_next_food();
+	}
+
 	function update() {
 	    //  Collide the player and the stars with the platforms
 	    //var hitPlatform = game.physics.arcade.collide(player, platforms);
@@ -134,7 +162,7 @@ Hungry = {
 
 	    }
 	    else if (this.spaceKey.isDown) {
-		player.angle = 0;
+		shoot_food();
 	    }
 	    else
 	    {
