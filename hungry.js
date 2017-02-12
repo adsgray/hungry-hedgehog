@@ -5,16 +5,35 @@ Hungry = {
 
 
 	var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+	var foods = [];
 
-	function preload() {
-	    game.load.image('sky', 'assets/sky.png');
-	    game.load.image('ground', 'assets/platform.png');
+	function init_foods() {
 	    game.load.image('beetle', 'assets/beetlesmall.png');
 	    game.load.image('slug', 'assets/slugsmall.png');
 	    game.load.image('worm', 'assets/wormsmall.png');
 	    game.load.image('frog', 'assets/frogsmall.png');
 	    game.load.image('earwig', 'assets/earwigsmall.png');
+
+	    foods = [
+		'beetle',
+		'slug',
+		'worm',
+		'frog',
+		'earwig',
+	    ];
+	}
+
+	function random_food() {
+	    var item = foods[Math.floor(Math.random()*foods.length)];
+	    return item;
+	}
+
+	function preload() {
+	    game.load.image('sky', 'assets/sky.png');
+	    game.load.image('ground', 'assets/platform.png');
 	    game.load.image('hedgehog', 'assets/hedgehogsmall.png');
+
+	    init_foods();
 	}
 
 	function create() {
@@ -49,14 +68,14 @@ Hungry = {
 	    for (var i = 0; i < 12; i++)
 	    {
 		//  Create a star inside of the 'stars' group
-		var beetle = food.create(i * 70, 0, 'earwig');
-		beetle.scale.setTo(0.5,0.5);
+		var f = food.create(i * 70, 0, random_food());
+		f.scale.setTo(0.5,0.5);
 
 		//  Let gravity do its thing
-		beetle.body.gravity.y = 7;
+		f.body.gravity.y = 7;
 
 		//  This just gives each star a slightly random bounce value
-		beetle.body.bounce.y = 0.7 + Math.random() * 0.2;
+		f.body.bounce.y = 0.7 + Math.random() * 0.2;
 	    }
 
 	}
