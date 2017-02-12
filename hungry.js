@@ -166,6 +166,8 @@ Hungry = {
 
 	    // sprite angles and velocity angles are not the same... must subtract 90 from sprite angle????
 	    game.physics.arcade.velocityFromAngle(food_to_shoot.angle - 90, shoot_velocity, food_to_shoot.body.velocity);
+	    food_to_shoot.body.angularVelocity = 300;
+	    //food_to_shoot.anchor.setTo(0.5,0.5);
 	    console.log(food_to_shoot);
 	    console.log("shooting: " + food_to_shoot);
 	    clear_food_on_nose();
