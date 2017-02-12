@@ -96,6 +96,8 @@ Hungry = {
 	    foodobj = init_foods();
 	    food = foodobj.random_food_grid();
 
+	    this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
 	}
 
 	function update() {
@@ -130,6 +132,9 @@ Hungry = {
 		player.angle += 1;
 		console.log(player.angle);
 
+	    }
+	    else if (this.spaceKey.isDown) {
+		player.angle = 0;
 	    }
 	    else
 	    {
