@@ -240,13 +240,15 @@ Hungry = {
 	    }
 
 
-	    game.physics.arcade.overlap(currently_shot_food, foodobj.food, collideFood, null, null);
+	    game.physics.arcade.overlap(currently_shot_food, foodobj.food, collideFood, null, this);
 	}
 
 	function collideFood(shotfood, gridfood) {
+	    shotfood.anchor.setTo(0.5, 0.5);
 	    shotfood.body.velocity = 0;
-	    shotfood.body.angularVelocity = 0;
-	    shotfood.angle = 0;
+	    shotfood.body.angularVelocity = 1000;
+	    foodobj.food.add(shotfood);
+	    //shotfood.angle = 0;
 	}
 
     },
