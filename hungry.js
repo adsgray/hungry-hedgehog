@@ -9,6 +9,7 @@ Hungry = {
 	var food;
 	var player_sprite;
 	var shoot_velocity = 250;
+	var currently_shot_food;
 
 	var foods = [
 	    'beetle',
@@ -23,7 +24,13 @@ Hungry = {
 	    return item;
 	}
 
+	function food_present_p(chance) {
+	    return Math.random() <= chance;
+	}
+
 	function init_foods() {
+
+	    var food_present_chance = 0.70;
 
 	    food = game.add.group();
 	    food.enableBody = true;
@@ -31,28 +38,37 @@ Hungry = {
 	    var foodObj = {
 		'random_food': random_food,
 		'food': food,
+		'foodgrid' : null,
 
 		'food_group': foods, // lol
 
 		'random_food_grid': function() {
+		    var lmargin = 100;
+		    var width = 50;
+		    var height = 45;
 		    // size of grid is 9x7
 		    console.log("A");
 		    food.removeAll(true);
+		    foodgrid = null;
 
 		    //  Here we'll create 12 of them evenly spaced apart
-		    for (var i = 0; i < 12; i++)
+		    for (var j = 0; j <= 7; j++) {
+
+		    for (var i = 0; i < 9; i++)
 		    {
 			console.log("in loop");
 			//  Create a star inside of the 'stars' group
-			var f = food.create(i * 70, 0, random_food());
+			if (!food_present_p(food_present_chance)) {
+			    continue;
+			}
+			var f = food.create(lmargin + i * width, j * height, random_food());
 			console.log(f);
 			f.scale.setTo(0.5,0.5);
 
-			//  Let gravity do its thing
-			f.body.gravity.y = 7;
+			//f.body.gravity.y = 7;
 
-			//  This just gives each star a slightly random bounce value
-			f.body.bounce.y = 0.7 + Math.random() * 0.2;
+			//f.body.bounce.y = 0.7 + Math.random() * 0.2;
+		    }
 		    }
 	    }
 	    }
@@ -165,9 +181,14 @@ Hungry = {
 	    }
 
 	    // sprite angles and velocity angles are not the same... must subtract 90 from sprite angle????
-	    game.physics.arcade.velocityFromAngle(food_to_shoot.angle - 90, shoot_velocity, food_to_shoot.body.velocity);
-	    food_to_shoot.body.angularVelocity = 300;
+	    velocity_angle = food_to_shoot.angle - 90;
 	    //food_to_shoot.anchor.setTo(0.5,0.5);
+	    game.physics.arcade.velocityFromAngle(velocity_angle, shoot_velocity, food_to_shoot.body.velocity);
+	    console.log("vel is: " + food_to_shoot.body.velocity);
+	    food_to_shoot.body.angularVelocity = 300;
+	    currently_shot_food = food_to_shoot; // set the global variable that is checked for overlap in the update() function
+
+
 	    console.log(food_to_shoot);
 	    console.log("shooting: " + food_to_shoot);
 	    clear_food_on_nose();
@@ -230,6 +251,8 @@ Hungry = {
 	    //game.physics.arcade.collide(stars, platforms);
 
 	    game.physics.arcade.overlap(player, foodobj.food, collectStar, null, this);
+	    game.physics.arcade.overlap(currently_shot_food, foodobj.food, collideFood, null, null);
+
 
 
 	}
@@ -240,6 +263,13 @@ Hungry = {
 	    // Removes the star from the screen
 	    star.kill();
 
+	}
+
+	function collideFood(shotfood, gridfood) {
+	    console.log("lakjdslfksj");
+	    shotfood.body.velocity = 0;
+	    shotfood.body.angularVelocity = 0;
+	    shotfood.angle = 0;
 	}
 
     },
