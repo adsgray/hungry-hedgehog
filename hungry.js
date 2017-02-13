@@ -54,23 +54,19 @@ Hungry = {
 		    //  Here we'll create 12 of them evenly spaced apart
 		    for (var j = 0; j <= 7; j++) {
 
-		    for (var i = 0; i < 9; i++)
-		    {
-			console.log("in loop");
-			//  Create a star inside of the 'stars' group
-			if (!food_present_p(food_present_chance)) {
-			    continue;
+			for (var i = 0; i < 9; i++)
+			{
+			    console.log("in loop");
+			    //  Create a star inside of the 'stars' group
+			    if (!food_present_p(food_present_chance)) {
+				continue;
+			    }
+			    var f = food.create(lmargin + i * width, j * height, random_food());
+			    console.log(f);
+			    f.scale.setTo(0.5,0.5);
 			}
-			var f = food.create(lmargin + i * width, j * height, random_food());
-			console.log(f);
-			f.scale.setTo(0.5,0.5);
-
-			//f.body.gravity.y = 7;
-
-			//f.body.bounce.y = 0.7 + Math.random() * 0.2;
 		    }
-		    }
-	    }
+		}
 	    }
 
 	    return foodObj;
@@ -78,7 +74,6 @@ Hungry = {
 
 	function preload() {
 	    game.load.image('sky', 'assets/sky.png');
-	    game.load.image('ground', 'assets/platform.png');
 	    game.load.image('hedgehog', 'assets/hedgehogsmall.png');
 
 	    game.load.image('beetle', 'assets/beetlesmall.png');
@@ -110,9 +105,6 @@ Hungry = {
 	    player.body.gravity.y = 300;
 	    player.body.collideWorldBounds = true;
 
-	    //  Our two animations, walking left and right.
-	    //player.animations.add('left', [0, 1, 2, 3], 10, true);
-	    //player.animations.add('right', [5, 6, 7, 8], 10, true);
 	    foodobj = init_foods();
 	    food = foodobj.random_food_grid();
 
@@ -248,25 +240,10 @@ Hungry = {
 	    }
 
 
-	    //game.physics.arcade.collide(stars, platforms);
-
-	    game.physics.arcade.overlap(player, foodobj.food, collectStar, null, this);
 	    game.physics.arcade.overlap(currently_shot_food, foodobj.food, collideFood, null, null);
-
-
-
-	}
-
-
-	function collectStar (player, star) {
-
-	    // Removes the star from the screen
-	    star.kill();
-
 	}
 
 	function collideFood(shotfood, gridfood) {
-	    console.log("lakjdslfksj");
 	    shotfood.body.velocity = 0;
 	    shotfood.body.angularVelocity = 0;
 	    shotfood.angle = 0;
