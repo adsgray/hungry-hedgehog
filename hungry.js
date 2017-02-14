@@ -20,9 +20,18 @@ Hungry = {
 
 	var map_objtoset = {};
 
+	function create_set_for_item(item) {
+
+	}
+
+	// add item to same set that nitem is in
+	function add_to_food_set(nitem, item) {
+
+	}
+
 	function construct_food_sets(colwidth, foodarray) {
 	    for (var i = 0; i < foodarray.length; i++) {
-		if (!(foodarray[i] in map_objtoset)) {
+		if (foodarray[i] != null && !(foodarray[i] in map_objtoset)) {
 		    // figure out which neighbours to check
 		    // 0   1   2   3   4   5   6   7
 		    // 8   9  10  11  12  13  14  15
@@ -42,24 +51,42 @@ Hungry = {
 
 		    } else if (i % colwidth == 0) {
 			// at the beginning of a row
-			neighbours.push(i+1);
+			neighbours.push(i + 1);
 			neighbours.push(i     + colwidth);
 			neighbours.push(i + 1 + colwidth);
 		    } else {
-			neighbours.push(i+1);
+			neighbours.push(i + 1);
 			neighbours.push(i - 1 + colwidth);
 			neighbours.push(i     + colwidth);
 			neighbours.push(i + 1 + colwidth);
 		    }
 
 		    // now filter out nieghbour indices that are beyond the end of the array
+		    // and also are not null in foodarray
 		    neighbours = neighbours.filter(function(val) {
-			return val < foodarray.length;
+			if (val >= foodarray.length) {
+			    return false;
+			}
+			var item = foodarray[val];
+			return item != null;
 		    })
 
 		    // now check to see if neighbours are the same type of food as "i"
+		    var nmatched = false;
+		    for (var n=0; n < neighbours.length; n++) {
+			var nitem = foodarray[neighbours[n]]; // neighbouritem
+			var item = foodarray[i];
 
+			if (item.key == nitem.key) {
+			    add_to_food_set(nitem, item); // add item to same set that nitem is in
+			    nmatched = true;
+			}
+		    }
 
+		    // if no neighbours matched then this is in a set by itself...
+		    if (!nmatched) {
+			create_set_for_item(item);
+		    }
 		}
 	    }
 
