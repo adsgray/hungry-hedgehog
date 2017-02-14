@@ -21,12 +21,35 @@ Hungry = {
 	var map_objtoset = {};
 
 	function create_set_for_item(item) {
+	    var set = {};
+	    set[item] = item;
+	    map_objtoset[item] = set;
 
+	    if (item.hasOwnProperty('hhfoodset') {
+		// should not happen??
+	    }
+	    item.hhfoodset = set; // buh
+	    return set;
 	}
 
 	// add item to same set that nitem is in
 	function add_to_food_set(nitem, item) {
+	    var set = null;
+	    if (!(nitem in map_objtoset)) {
+		set = create_set_for_item(nitem);
+	    } else {
+		set = map_objtoset[nitem];
+		// OR:
+		// set = nitem.hhfoodset;
+	    }
+	    set[item] = item;
+	    map_objtoset[item] = set;
 
+	    if (item.hasOwnProperty('hhfoodset') {
+		// should not happen??
+	    }
+	    item.hhfoodset = set; // buh
+	    return set;
 	}
 
 	function construct_food_sets(colwidth, foodarray) {
