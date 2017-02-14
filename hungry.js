@@ -1,8 +1,22 @@
 
+// http://stackoverflow.com/questions/10892322/javascript-hashtable-use-object-key
+// http://stackoverflow.com/questions/194846/is-there-any-kind-of-hash-code-function-in-javascript
+
 Hungry = {
 
     'startgame': function () {
 
+
+	var hash_id = 0;
+
+	function create_tostring_function() {
+	    var id = hash_id;
+	    hash_id++;
+
+	    return function() {
+		return "object_" + id;
+	    }
+	}
 
 	var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 	var foodobj;
@@ -10,6 +24,7 @@ Hungry = {
 	var player_sprite;
 	var shoot_velocity = 250;
 	var currently_shot_food;
+
 
 	var foods = [
 	    'beetle',
@@ -30,7 +45,7 @@ Hungry = {
 
 	function init_foods() {
 
-	    var food_present_chance = 0.70;
+	    var food_present_chance = 0.65;
 
 	    food = game.add.group();
 	    food.enableBody = true;
@@ -62,7 +77,7 @@ Hungry = {
 				continue;
 			    }
 			    var f = food.create(lmargin + i * width, j * height, random_food());
-			    console.log(f);
+			    f.toString = create_tostring_function();
 			    f.scale.setTo(0.5,0.5);
 			}
 		    }
@@ -125,6 +140,7 @@ Hungry = {
 		return;
 	    }
 	    food_on_nose_sprite = game.add.sprite(x, y, food_on_nose);
+	    food_on_nose_sprite.toString = create_tostring_function();
 	    food_on_nose_sprite.scale.setTo(0.5,0.5);
 	    game.physics.arcade.enable(food_on_nose_sprite);
 	    food_on_nose_sprite.angle = player_sprite.angle;
