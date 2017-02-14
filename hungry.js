@@ -61,6 +61,9 @@ Hungry = {
 		    //
 		    // If we're on "3" we need to look at 4, 10, 11, and 12
 		    // to see if they're the same food type.
+		    // NOTE: actually we should look backwards too...
+		    // So also 2, and the previous row.
+		    //
 		    // But if we're on 7 we don't check 8, and if we're on 8 we don't check 7...
 		    //
 		    // So if (i mod colwidth) = (colwidth - 1), or = 0 are special cases.
@@ -87,7 +90,7 @@ Hungry = {
 		    // now filter out nieghbour indices that are beyond the end of the array
 		    // and also are not null in foodarray
 		    neighbours = neighbours.filter(function(val) {
-			if (val >= foodarray.length) {
+			if (val < 0 || val >= foodarray.length) {
 			    return false;
 			}
 			var item = foodarray[val];
@@ -103,6 +106,7 @@ Hungry = {
 			if (item.key == nitem.key) {
 			    add_to_food_set(nitem, item); // add item to same set that nitem is in
 			    nmatched = true;
+			    break;
 			}
 		    }
 
