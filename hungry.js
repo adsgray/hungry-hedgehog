@@ -18,6 +18,53 @@ Hungry = {
 	    }
 	}
 
+	var map_objtoset = {};
+
+	function construct_food_sets(colwidth, foodarray) {
+	    for (var i = 0; i < foodarray.length; i++) {
+		if (!(foodarray[i] in map_objtoset)) {
+		    // figure out which neighbours to check
+		    // 0   1   2   3   4   5   6   7
+		    // 8   9  10  11  12  13  14  15
+		    //
+		    // If we're on "3" we need to look at 4, 10, 11, and 12
+		    // to see if they're the same food type.
+		    // But if we're on 7 we don't check 8, and if we're on 8 we don't check 7...
+		    //
+		    // So if (i mod colwidth) = (colwidth - 1), or = 0 are special cases.
+		    //
+		    var neighbours = [];
+
+		    if ((i % colwidth) == (colwidth - 1)) {
+			// at the end of a row
+			neighbours.push(i - 1 + colwidth);
+			neighbours.push(i     + colwidth);
+
+		    } else if (i % colwidth == 0) {
+			// at the beginning of a row
+			neighbours.push(i+1);
+			neighbours.push(i     + colwidth);
+			neighbours.push(i + 1 + colwidth);
+		    } else {
+			neighbours.push(i+1);
+			neighbours.push(i - 1 + colwidth);
+			neighbours.push(i     + colwidth);
+			neighbours.push(i + 1 + colwidth);
+		    }
+
+		    // now filter out nieghbour indices that are beyond the end of the array
+		    neighbours = neighbours.filter(function(val) {
+			return val < foodarray.length;
+		    })
+
+		    // now check to see if neighbours are the same type of food as "i"
+
+
+		}
+	    }
+
+	}
+
 	var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 	var foodobj;
 	var food;
@@ -66,21 +113,29 @@ Hungry = {
 		    food.removeAll(true);
 		    foodgrid = null;
 
-		    //  Here we'll create 12 of them evenly spaced apart
-		    for (var j = 0; j <= 7; j++) {
+		    var foodarray = [];
+		    var rows = 7;
+		    var columns = 8;
 
-			for (var i = 0; i < 9; i++)
+		    for (var j = 0; j <= rows; j++) {
+
+			for (var i = 0; i <= columns; i++)
 			{
 			    console.log("in loop");
 			    //  Create a star inside of the 'stars' group
 			    if (!food_present_p(food_present_chance)) {
+				foodarray.push(null);
 				continue;
 			    }
 			    var f = food.create(lmargin + i * width, j * height, random_food());
 			    f.toString = create_tostring_function();
 			    f.scale.setTo(0.5,0.5);
+
+			    foodarray.push(f);
 			}
 		    }
+
+		    construct_food_sets(columns, foodarray);
 		}
 	    }
 
