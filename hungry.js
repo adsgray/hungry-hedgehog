@@ -188,7 +188,7 @@ Hungry = {
 		    foodgrid = null;
 
 		    var foodarray = [];
-		    var rows = 7;
+		    var rows = 6;
 		    var columns = 8;
 
 		    for (var j = 0; j <= rows; j++) {
