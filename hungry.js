@@ -8,6 +8,7 @@ Hungry = {
 
 
 	var hash_id = 0;
+	const SCORING_SIZE = 3;
 
 	function create_tostring_function() {
 	    var id = hash_id;
@@ -321,10 +322,20 @@ Hungry = {
 	    setTimeout(function() { can_shoot = true; }, 2000);
 	}
 
+	var sprites_to_destroy = [];
+	function destroy_pending_sprites() {
+	    for (var i = 0; i < sprites_to_destroy.length; i++) {
+		sprites_to_destroy[i].destroy();
+	    }
+	    sprites_to_destroy = [];
+	}
+
 	function update() {
 	    //  Collide the player and the stars with the platforms
 	    //var hitPlatform = game.physics.arcade.collide(player, platforms);
 	    cursors = game.input.keyboard.createCursorKeys();
+
+	    destroy_pending_sprites();
 
 
 	    //  Reset the players velocity (movement)
@@ -376,6 +387,23 @@ Hungry = {
 	    game.physics.arcade.overlap(currently_shot_food, foodobj.food, collideFood, null, this);
 	}
 
+	function scoring_set_check(item) {
+	    keys = Object.keys(item.hhfoodset);
+	    if (keys.length >= SCORING_SIZE) {
+		console.log("scoring with a set of " + item.key + " of size " + keys.length);
+		for (var i = 0; i < keys.length; i++) {
+		    var todestroy = item.hhfoodset[keys[i]];
+		    foodobj.food.remove(todestroy);
+		    sprites_to_destroy.push(todestroy);
+		    // cannot do directly because phaser.io will try to do collision detection
+		    // iterate over the sprites_to_destroy array in update() function
+		    //todestroy.destroy();
+		    // and basically get a null pointer exception.
+		}
+
+	    }
+	}
+
 	function collideFood(shotfood, gridfood) {
 	    shotfood.anchor.setTo(0.5, 0.5);
 	    shotfood.body.velocity = 0;
@@ -392,6 +420,9 @@ Hungry = {
 
 	    // add to food sprite group
 	    foodobj.food.add(shotfood);
+
+	    // check if the shotfood now belongs to a set that is large enough to "score" with by elimenating
+	    scoring_set_check(shotfood);
 	}
 
     },
