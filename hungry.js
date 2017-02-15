@@ -2,6 +2,8 @@
 // http://stackoverflow.com/questions/10892322/javascript-hashtable-use-object-key
 // http://stackoverflow.com/questions/194846/is-there-any-kind-of-hash-code-function-in-javascript
 
+// http://www.html5gamedevs.com/topic/4227-decrease-collision-box-size/
+
 Hungry = {
 
     'startgame': function () {
