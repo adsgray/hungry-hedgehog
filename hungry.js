@@ -45,7 +45,7 @@ Hungry = {
 	    set[item] = item;
 	    map_objtoset[item] = set;
 
-	    if (item.hasOwnProperty('hhfoodset') {
+	    if (item.hasOwnProperty('hhfoodset')) {
 		// should not happen??
 	    }
 	    item.hhfoodset = set; // buh
@@ -72,16 +72,24 @@ Hungry = {
 
 		    if ((i % colwidth) == (colwidth - 1)) {
 			// at the end of a row
+			neighbours.push(i     - colwidth);
+			neighbours.push(i - 1 - colwidth);
 			neighbours.push(i - 1 + colwidth);
 			neighbours.push(i     + colwidth);
 
 		    } else if (i % colwidth == 0) {
 			// at the beginning of a row
+			neighbours.push(i     - colwidth);
+			neighbours.push(i + 1 - colwidth);
 			neighbours.push(i + 1);
 			neighbours.push(i     + colwidth);
 			neighbours.push(i + 1 + colwidth);
 		    } else {
+			neighbours.push(i - 1 - colwidth);
+			neighbours.push(i     - colwidth);
+			neighbours.push(i + 1 - colwidth);
 			neighbours.push(i + 1);
+			neighbours.push(i - 1);
 			neighbours.push(i - 1 + colwidth);
 			neighbours.push(i     + colwidth);
 			neighbours.push(i + 1 + colwidth);
