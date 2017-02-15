@@ -143,8 +143,17 @@ Hungry = {
 	    'slug',
 	    'worm',
 	    'frog',
-	    'earwig',
+	    'earwig'
 	];
+
+	// for collision detection
+	var foodbounds = {
+	    'beetle' : { 'h': 80, 'w': 60 },
+	    'slug'   : { 'h': 60, 'w': 80 },
+	    'worm'   : { 'h': 50, 'w': 80 },
+	    'frog'   : { 'h': 60, 'w': 80 },
+	    'earwig' : { 'h': 40, 'w': 80 }
+	};
 
 	function random_food() {
 	    var item = foods[Math.floor(Math.random()*foods.length)];
@@ -170,7 +179,7 @@ Hungry = {
 		'food_group': foods, // lol
 
 		'random_food_grid': function() {
-		    var lmargin = 100;
+		    var lmargin = 125;
 		    var width = 50;
 		    var height = 45;
 		    // size of grid is 9x7
@@ -192,7 +201,9 @@ Hungry = {
 				foodarray.push(null);
 				continue;
 			    }
-			    var f = food.create(lmargin + i * width, j * height, random_food());
+			    var food_type = random_food();
+			    var f = food.create(lmargin + i * width, j * height, food_type);
+			    f.body.setSize(foodbounds[food_type].w, foodbounds[food_type].h, 10, 10);
 			    f.toString = create_tostring_function();
 			    f.scale.setTo(0.5,0.5);
 
@@ -263,6 +274,7 @@ Hungry = {
 	    food_on_nose_sprite.toString = create_tostring_function();
 	    food_on_nose_sprite.scale.setTo(0.5,0.5);
 	    game.physics.arcade.enable(food_on_nose_sprite);
+	    food_on_nose_sprite.body.setSize(foodbounds[food_on_nose].w, foodbounds[food_on_nose].h, 10, 10);
 	    food_on_nose_sprite.angle = player_sprite.angle;
 	    food_on_nose_sprite.anchor.setTo(0.5, 1.0);
 	    food_on_nose_sprite.body.collideWorldBounds = true;
