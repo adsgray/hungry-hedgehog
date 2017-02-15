@@ -25,7 +25,7 @@ Hungry = {
 	    set[item] = item;
 	    map_objtoset[item] = set;
 
-	    if (item.hasOwnProperty('hhfoodset') {
+	    if (item.hasOwnProperty('hhfoodset')) {
 		// should not happen??
 	    }
 	    item.hhfoodset = set; // buh
@@ -380,8 +380,18 @@ Hungry = {
 	    shotfood.anchor.setTo(0.5, 0.5);
 	    shotfood.body.velocity = 0;
 	    shotfood.body.angularVelocity = 1000;
-	    foodobj.food.add(shotfood);
 	    //shotfood.angle = 0;
+
+	    if (shotfood.key == gridfood.key) {
+		// add to set if it matches
+		add_to_food_set(gridfood, shotfood);
+	    } else {
+		// otherwise create another set
+		create_set_for_item(shotfood);
+	    }
+
+	    // add to food sprite group
+	    foodobj.food.add(shotfood);
 	}
 
     },
