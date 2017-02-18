@@ -232,6 +232,7 @@ Hungry = {
 	    game.load.image('earwig', 'assets/earwigsmall.png');
 
 	    game.load.audio('wallbounce', 'assets/wallbouncesound.mp3');
+	    game.load.audio('foodland', 'assets/foodlandsound.mp3');
 	}
 
 	function create() {
@@ -274,6 +275,7 @@ Hungry = {
 	var sounds = {};
 	function init_sounds() {
 	    sounds["wallbounce"] = game.add.audio('wallbounce');
+	    sounds["foodland"] = game.add.audio('foodland');
 	}
 
 	function play_sound(snd) {
@@ -470,6 +472,10 @@ Hungry = {
 	}
 
 	function collideFood(shotfood, gridfood) {
+	    currently_shot_food = null;
+
+	    play_sound('foodland');
+
 	    shooting = false;
 	    shotfood.anchor.setTo(0.5, 0.5);
 	    shotfood.body.velocity = 0;
