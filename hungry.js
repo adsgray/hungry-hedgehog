@@ -258,12 +258,23 @@ Hungry = {
 
 	    this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
+	    init_food_on_nose();
 	}
 
-	var food_on_nose = '';
-	var food_on_nose_sprite = null;
-	var next_food = '';
-	var can_shoot = true;
+	var food_on_nose;
+	var food_on_nose_sprite;
+	var next_food;
+	var can_shoot;
+
+	function init_food_on_nose() {
+	    food_on_nose = random_food();
+	    food_on_nose_sprite = null;
+	    next_food = random_food();
+	    can_shoot = true;
+
+	    make_food_on_nose_sprite();
+	}
+
 
 	function make_food_on_nose_sprite() {
 	    x = 385;
