@@ -11,6 +11,7 @@ Hungry = {
 
 	var hash_id = 0;
 	const SCORING_SIZE = 3;
+	const SHOT_FOOD_SPIN = 350; // angular velocity of shot food
 
 	function create_tostring_function() {
 	    var id = hash_id;
@@ -188,8 +189,8 @@ Hungry = {
 		    foodgrid = null;
 
 		    var foodarray = [];
-		    var rows = 6;
-		    var columns = 8;
+		    var rows = 5;
+		    var columns = 7;
 
 		    for (var j = 0; j <= rows; j++) {
 
@@ -221,6 +222,7 @@ Hungry = {
 	function preload() {
 	    game.load.image('sky', 'assets/sky.png');
 	    game.load.image('hedgehog', 'assets/hedgehogsmall.png');
+	    game.load.image('targetline', 'assets/targetline.png');
 
 	    game.load.image('beetle', 'assets/beetlesmall.png');
 	    game.load.image('slug', 'assets/slugsmall.png');
@@ -276,7 +278,8 @@ Hungry = {
 	    game.physics.arcade.enable(food_on_nose_sprite);
 	    food_on_nose_sprite.body.setSize(foodbounds[food_on_nose].w, foodbounds[food_on_nose].h, 10, 10);
 	    food_on_nose_sprite.angle = player_sprite.angle;
-	    food_on_nose_sprite.anchor.setTo(0.5, 1.0);
+	    //food_on_nose_sprite.anchor.setTo(0.5, 1.0);
+	    food_on_nose_sprite.anchor.setTo(0.5, 0.5);
 	    food_on_nose_sprite.body.collideWorldBounds = true;
 	    food_on_nose_sprite.body.bounce.set(0.9);
 	}
@@ -325,7 +328,7 @@ Hungry = {
 	    //food_to_shoot.anchor.setTo(0.5,0.5);
 	    game.physics.arcade.velocityFromAngle(velocity_angle, shoot_velocity, food_to_shoot.body.velocity);
 	    console.log("vel is: " + food_to_shoot.body.velocity);
-	    food_to_shoot.body.angularVelocity = 300;
+	    food_to_shoot.body.angularVelocity = SHOT_FOOD_SPIN;
 	    currently_shot_food = food_to_shoot; // set the global variable that is checked for overlap in the update() function
 
 
@@ -402,6 +405,8 @@ Hungry = {
 	}
 
 	function scoring_set_check(item) {
+	    // keys of hhfoodset are the toString ids of the items in the set
+	    // hhfoodset[key] is the item itself
 	    keys = Object.keys(item.hhfoodset);
 	    if (keys.length >= SCORING_SIZE) {
 		console.log("scoring with a set of " + item.key + " of size " + keys.length);
@@ -421,7 +426,8 @@ Hungry = {
 	function collideFood(shotfood, gridfood) {
 	    shotfood.anchor.setTo(0.5, 0.5);
 	    shotfood.body.velocity = 0;
-	    shotfood.body.angularVelocity = 1000;
+	    //shotfood.body.angularVelocity = 1000;
+	    shotfood.body.angularVelocity = 0;
 	    //shotfood.angle = 0;
 
 	    if (shotfood.key == gridfood.key) {
