@@ -8,7 +8,7 @@ Hungry = {
 
     'startgame': function () {
 
-
+	var shooting = false;
 	var hash_id = 0;
 	const SCORING_SIZE = 3;
 	const SHOT_FOOD_SPIN = 350; // angular velocity of shot food
@@ -137,7 +137,7 @@ Hungry = {
 	var player_sprite;
 	var targetline;
 	var shoot_velocity = 250;
-	var currently_shot_food;
+	var currently_shot_food = null;
 
 
 	var foods = [
@@ -230,6 +230,8 @@ Hungry = {
 	    game.load.image('worm', 'assets/wormsmall.png');
 	    game.load.image('frog', 'assets/frogsmall.png');
 	    game.load.image('earwig', 'assets/earwigsmall.png');
+
+	    game.load.audio('wallbounce', 'assets/wallbouncesound.mp3');
 	}
 
 	function create() {
@@ -265,6 +267,18 @@ Hungry = {
 	    this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
 	    init_food_on_nose();
+
+	    init_sounds();
+	}
+
+	var sounds = {};
+	function init_sounds() {
+	    sounds["wallbounce"] = game.add.audio('wallbounce');
+	}
+
+	function play_sound(snd) {
+	    var sound = sounds[snd];
+	    sound.play();
 	}
 
 	var food_on_nose;
@@ -355,6 +369,7 @@ Hungry = {
 	    clear_food_on_nose();
 	    can_shoot = false;
 	    setTimeout(function() { can_shoot = true; }, 2000);
+	    shooting = true;
 	}
 
 	var sprites_to_destroy = [];
@@ -420,6 +435,19 @@ Hungry = {
 
 
 	    game.physics.arcade.overlap(currently_shot_food, foodobj.food, collideFood, null, this);
+
+	    if (shooting) {
+		if (currently_shot_food.body.blocked.up || currently_shot_food.body.blocked.down
+		    || currently_shot_food.body.blocked.left || currently_shot_food.body.blocked.right) {
+		    wall_bounce_sound();
+		}
+	    }
+	}
+
+	function wall_bounce_sound() {
+	    console.log("bounce!");
+	    play_sound("wallbounce");
+	    //this.sndBallBounce.play();
 	}
 
 	function scoring_set_check(item) {
@@ -442,6 +470,7 @@ Hungry = {
 	}
 
 	function collideFood(shotfood, gridfood) {
+	    shooting = false;
 	    shotfood.anchor.setTo(0.5, 0.5);
 	    shotfood.body.velocity = 0;
 	    //shotfood.body.angularVelocity = 1000;
