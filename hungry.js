@@ -234,6 +234,7 @@ Hungry = {
 	    game.load.audio('wallbounce', 'assets/wallbouncesound.mp3');
 	    game.load.audio('foodland', 'assets/foodlandsound.mp3');
 	    game.load.audio('shoot', 'assets/leapoutsound.mp3');
+	    game.load.audio('eat', 'assets/eatfood1sound.mp3');
 	}
 
 	function create() {
@@ -278,6 +279,7 @@ Hungry = {
 	    sounds["wallbounce"] = game.add.audio('wallbounce');
 	    sounds["foodland"] = game.add.audio('foodland');
 	    sounds["shoot"] = game.add.audio('shoot');
+	    sounds["eat"] = game.add.audio('eat');
 	}
 
 	function play_sound(snd) {
@@ -444,15 +446,9 @@ Hungry = {
 	    if (shooting) {
 		if (currently_shot_food.body.blocked.up || currently_shot_food.body.blocked.down
 		    || currently_shot_food.body.blocked.left || currently_shot_food.body.blocked.right) {
-		    wall_bounce_sound();
+		    play_sound("wallbounce");
 		}
 	    }
-	}
-
-	function wall_bounce_sound() {
-	    console.log("bounce!");
-	    play_sound("wallbounce");
-	    //this.sndBallBounce.play();
 	}
 
 	function scoring_set_check(item) {
@@ -470,7 +466,8 @@ Hungry = {
 		    //todestroy.destroy();
 		    // and basically get a null pointer exception.
 		}
-
+		//game.sound.stopAll();
+		play_sound("eat");
 	    }
 	}
 
