@@ -135,6 +135,7 @@ Hungry = {
 	var foodobj;
 	var food;
 	var player_sprite;
+	var targetline;
 	var shoot_velocity = 250;
 	var currently_shot_food;
 
@@ -245,6 +246,11 @@ Hungry = {
 	    player_sprite = player;
 	    player.anchor.setTo(0.5, 0.5);
 
+	    //targetline = game.add.sprite(375, game.world.height, "targetline");
+	    targetline = game.add.sprite(350, 500, "targetline");
+	    targetline.alpha = 0.25;
+	    targetline.anchor.setTo(0.0,1.0);
+
 	    //  We need to enable physics on the player
 	    game.physics.arcade.enable(player);
 
@@ -299,6 +305,7 @@ Hungry = {
 	    if (food_on_nose_sprite != null) {
 		food_on_nose_sprite.angle += angle;
 	    }
+	    targetline.angle += angle;
 	}
 
 	// place next_food on nose and choose random food for next
