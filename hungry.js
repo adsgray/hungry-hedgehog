@@ -233,6 +233,7 @@ Hungry = {
 
 	    game.load.audio('wallbounce', 'assets/wallbouncesound.mp3');
 	    game.load.audio('foodland', 'assets/foodlandsound.mp3');
+	    game.load.audio('shoot', 'assets/leapoutsound.mp3');
 	}
 
 	function create() {
@@ -276,6 +277,7 @@ Hungry = {
 	function init_sounds() {
 	    sounds["wallbounce"] = game.add.audio('wallbounce');
 	    sounds["foodland"] = game.add.audio('foodland');
+	    sounds["shoot"] = game.add.audio('shoot');
 	}
 
 	function play_sound(snd) {
@@ -347,6 +349,7 @@ Hungry = {
 	}
 
 	function shoot_food() {
+	    play_sound("shoot");
 	    var food_to_shoot = food_on_nose_sprite;
 	    if (food_to_shoot == null) {
 		get_next_food();
