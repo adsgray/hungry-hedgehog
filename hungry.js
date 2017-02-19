@@ -235,6 +235,8 @@ Hungry = {
 	    game.load.audio('foodland', 'assets/foodlandsound.mp3');
 	    game.load.audio('shoot', 'assets/leapoutsound.mp3');
 	    game.load.audio('eat', 'assets/eatfood1sound.mp3');
+	    //game.load.audio('adjust', 'assets/shaker.mp3');
+	    game.load.audio('adjust', 'assets/metaltickle.mp3');
 	}
 
 	function create() {
@@ -280,6 +282,7 @@ Hungry = {
 	    sounds["foodland"] = game.add.audio('foodland');
 	    sounds["shoot"] = game.add.audio('shoot');
 	    sounds["eat"] = game.add.audio('eat');
+	    sounds["adjust"] = game.add.audio('adjust');
 	}
 
 	function play_sound(snd) {
@@ -408,6 +411,7 @@ Hungry = {
 		}
 		player.angle -= 1;
 		inc_fons_angle(-1);
+		play_sound("adjust");
 		//console.log(player.angle);
 
 	    }
@@ -421,6 +425,7 @@ Hungry = {
 		}
 		player.angle += 1;
 		inc_fons_angle(1);
+		play_sound("adjust");
 		//console.log(player.angle);
 
 	    }
