@@ -293,13 +293,11 @@ Hungry = {
 	var food_on_nose;
 	var food_on_nose_sprite;
 	var next_food;
-	var can_shoot;
 
 	function init_food_on_nose() {
 	    food_on_nose = random_food();
 	    food_on_nose_sprite = null;
 	    next_food = random_food();
-	    can_shoot = true;
 
 	    make_food_on_nose_sprite();
 	}
@@ -354,16 +352,19 @@ Hungry = {
 	}
 
 	function shoot_food() {
-	    play_sound("shoot");
+
 	    var food_to_shoot = food_on_nose_sprite;
 	    if (food_to_shoot == null) {
 		get_next_food();
 		return;
 	    }
 
-	    if (!can_shoot) {
+	    if (shooting) {
+		console.log("already shooting!");
 		return;
 	    }
+
+	    play_sound("shoot");
 
 	    // sprite angles and velocity angles are not the same... must subtract 90 from sprite angle????
 	    velocity_angle = food_to_shoot.angle - 90;
@@ -377,8 +378,6 @@ Hungry = {
 	    console.log(food_to_shoot);
 	    console.log("shooting: " + food_to_shoot);
 	    clear_food_on_nose();
-	    can_shoot = false;
-	    setTimeout(function() { can_shoot = true; }, 2000);
 	    shooting = true;
 	}
 
