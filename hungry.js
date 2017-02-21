@@ -12,6 +12,7 @@ Hungry = {
 	var hash_id = 0;
 	const SCORING_SIZE = 3;
 	const SHOT_FOOD_SPIN = 350; // angular velocity of shot food
+	const ACTION_DELAY = 3;
 
 	function create_tostring_function() {
 	    var id = hash_id;
@@ -440,6 +441,8 @@ Hungry = {
 	    return is_pointer_down_in_sprite(player_sprite);
 	}
 
+	var actionDelayCount = 0;
+
 	function update() {
 	    //  Collide the player and the stars with the platforms
 	    //var hitPlatform = game.physics.arcade.collide(player, platforms);
@@ -451,51 +454,48 @@ Hungry = {
 	    //  Reset the players velocity (movement)
 	    player.body.velocity.x = 0;
 
+	    var doAction = (actionDelayCount++ % ACTION_DELAY) == 0;
 
-	    if (cursors.left.isDown || is_rotate_left_button_down())
-	    {
-		//  Move to the left
-		//player.body.velocity.x = -150;
-		if (player.angle <= -80) {
-		    console.log("ow!");
-		    return;
+	    if (doAction) {
+
+		if (cursors.left.isDown || is_rotate_left_button_down())
+		{
+		    //  Move to the left
+		    //player.body.velocity.x = -150;
+		    if (player.angle <= -80) {
+			console.log("ow!");
+			return;
+		    }
+		    player.angle -= 1;
+		    inc_fons_angle(-1);
+		    play_sound("adjust");
+		    //console.log(player.angle);
+
 		}
-		player.angle -= 1;
-		inc_fons_angle(-1);
-		play_sound("adjust");
-		//console.log(player.angle);
+		else if (cursors.right.isDown || is_rotate_right_button_down())
+		{
+		    //  Move to the right
+		    //player.body.velocity.x = 150;
+		    if (player.angle >= 80) {
+			console.log("ow!");
+			return;
+		    }
+		    player.angle += 1;
+		    inc_fons_angle(1);
+		    play_sound("adjust");
+		    //console.log(player.angle);
 
-	    }
-	    else if (cursors.right.isDown || is_rotate_right_button_down())
-	    {
-		//  Move to the right
-		//player.body.velocity.x = 150;
-		if (player.angle >= 80) {
-		    console.log("ow!");
-		    return;
 		}
-		player.angle += 1;
-		inc_fons_angle(1);
-		play_sound("adjust");
-		//console.log(player.angle);
+		else if (this.spaceKey.isDown || is_shoot_button_down()) {
+		    shoot_food();
+		}
+		else
+		{
+		    //  Stand still
+		    player.animations.stop();
 
+		}
 	    }
-	    else if (this.spaceKey.isDown || is_shoot_button_down()) {
-		shoot_food();
-	    }
-	    else
-	    {
-		//  Stand still
-		player.animations.stop();
-
-	    }
-
-	    //  Allow the player to jump if they are touching the ground.
-	    if (cursors.up.isDown && player.body.touching.down) // && hitPlatform)
-	    {
-		player.body.velocity.y = -350;
-	    }
-
 
 	    game.physics.arcade.overlap(currently_shot_food, foodobj.food, collideFood, null, this);
 
