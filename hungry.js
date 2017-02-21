@@ -367,6 +367,16 @@ Hungry = {
 	    food_on_nose_sprite = null;
 	}
 
+	function shot_food_spin() {
+	    if (Math.random() < 0.5) {
+		return SHOT_FOOD_SPIN;
+
+	    } else {
+		return -1 * SHOT_FOOD_SPIN;
+
+	    }
+	}
+
 	function shoot_food() {
 
 	    var food_to_shoot = food_on_nose_sprite;
@@ -387,7 +397,7 @@ Hungry = {
 	    //food_to_shoot.anchor.setTo(0.5,0.5);
 	    game.physics.arcade.velocityFromAngle(velocity_angle, shoot_velocity, food_to_shoot.body.velocity);
 	    console.log("vel is: " + food_to_shoot.body.velocity);
-	    food_to_shoot.body.angularVelocity = SHOT_FOOD_SPIN;
+	    food_to_shoot.body.angularVelocity = shot_food_spin();
 	    currently_shot_food = food_to_shoot; // set the global variable that is checked for overlap in the update() function
 
 
