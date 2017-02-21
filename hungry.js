@@ -193,11 +193,11 @@ Hungry = {
 
 		    var foodarray = [];
 		    var rows = 5;
-		    var columns = 7;
+		    var columns = 8;
 
-		    for (var j = 0; j <= rows; j++) {
+		    for (var j = 0; j < rows; j++) {
 
-			for (var i = 0; i <= columns; i++)
+			for (var i = 0; i < columns; i++)
 			{
 			    console.log("in loop");
 			    //  Create a star inside of the 'stars' group
