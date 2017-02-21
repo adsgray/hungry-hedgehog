@@ -224,6 +224,8 @@ Hungry = {
 	    game.load.image('sky', 'assets/sky.png');
 	    game.load.image('hedgehog', 'assets/hedgehogsmall.png');
 	    game.load.image('targetline', 'assets/targetline.png');
+	    game.load.image('rotateleft', 'assets/rotateleft.png');
+	    game.load.image('rotateright', 'assets/rotateright.png');
 
 	    game.load.image('beetle', 'assets/beetlesmall.png');
 	    game.load.image('slug', 'assets/slugsmall.png');
@@ -257,6 +259,16 @@ Hungry = {
 	    targetline = game.add.sprite(350, 500, "targetline");
 	    targetline.alpha = 0.25;
 	    targetline.anchor.setTo(0.0,1.0);
+
+	    // init touch controls
+	    game.input.addPointer();
+	    game.input.mouse.capture = true;
+	    //game.input.multiInputOverride = Phaser.Input.TOUCH_OVERRIDES_MOUSE;
+	    rotate_left_button = game.add.sprite(100,game.world.height - 70,'rotateleft');
+	    rotate_left_button.scale.setTo(0.15,0.15);
+	    rotate_right_button = game.add.sprite(600,game.world.height - 70,'rotateright');
+	    rotate_right_button.scale.setTo(0.15,0.15);
+
 
 	    //  We need to enable physics on the player
 	    game.physics.arcade.enable(player);
@@ -389,6 +401,45 @@ Hungry = {
 	    sprites_to_destroy = [];
 	}
 
+	    /*
+	    if (!(sprite.getBounds().contains(x, y))) {
+		// Do something
+	    }
+	    */
+
+	var rotate_left_button;
+	var rotate_left_button;
+
+	function is_pointer_down_in_sprite(sprite) {
+	    if (game.input.pointer1.isDown) {
+		var x = game.input.pointer1.x;
+		var y = game.input.pointer1.y;
+		console.log("touch x and y is: " + x + "," + y);
+		return (sprite.getBounds().contains(x,y));
+	    }
+
+	    if (game.input.activePointer.leftButton.isDown) {
+		var x = game.input.mousePointer.x;
+		var y = game.input.mousePointer.y;
+		console.log("mouse x and y is: " + x + "," + y);
+		return (sprite.getBounds().contains(x,y));
+	    }
+
+	    return false;
+	}
+
+	function is_rotate_left_button_down() {
+	    return is_pointer_down_in_sprite(rotate_left_button);
+	}
+
+	function is_rotate_right_button_down() {
+	    return is_pointer_down_in_sprite(rotate_right_button);
+	}
+
+	function is_shoot_button_down() {
+	    return is_pointer_down_in_sprite(player_sprite);
+	}
+
 	function update() {
 	    //  Collide the player and the stars with the platforms
 	    //var hitPlatform = game.physics.arcade.collide(player, platforms);
@@ -400,7 +451,8 @@ Hungry = {
 	    //  Reset the players velocity (movement)
 	    player.body.velocity.x = 0;
 
-	    if (cursors.left.isDown)
+
+	    if (cursors.left.isDown || is_rotate_left_button_down())
 	    {
 		//  Move to the left
 		//player.body.velocity.x = -150;
@@ -414,7 +466,7 @@ Hungry = {
 		//console.log(player.angle);
 
 	    }
-	    else if (cursors.right.isDown)
+	    else if (cursors.right.isDown || is_rotate_right_button_down())
 	    {
 		//  Move to the right
 		//player.body.velocity.x = 150;
@@ -428,7 +480,7 @@ Hungry = {
 		//console.log(player.angle);
 
 	    }
-	    else if (this.spaceKey.isDown) {
+	    else if (this.spaceKey.isDown || is_shoot_button_down()) {
 		shoot_food();
 	    }
 	    else
