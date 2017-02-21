@@ -182,7 +182,8 @@ Hungry = {
 		'food_group': foods, // lol
 
 		'random_food_grid': function() {
-		    var lmargin = 125;
+		    var tmargin = 35;
+		    var lmargin = 200;
 		    var width = 50;
 		    var height = 45;
 		    // size of grid is 9x7
@@ -205,7 +206,7 @@ Hungry = {
 				continue;
 			    }
 			    var food_type = random_food();
-			    var f = food.create(lmargin + i * width, j * height, food_type);
+			    var f = food.create(lmargin + i * width, tmargin + j * height, food_type);
 			    f.anchor.setTo(0.5,0.5);
 			    f.angle = Math.floor(Math.random() * 360);
 			    f.body.setSize(foodbounds[food_type].w, foodbounds[food_type].h, 10, 10);
