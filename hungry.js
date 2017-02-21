@@ -12,7 +12,7 @@ Hungry = {
 	var hash_id = 0;
 	const SCORING_SIZE = 3;
 	const SHOT_FOOD_SPIN = 350; // angular velocity of shot food
-	const ACTION_DELAY = 3;
+	const ACTION_DELAY = 2;
 
 	function create_tostring_function() {
 	    var id = hash_id;
@@ -206,6 +206,8 @@ Hungry = {
 			    }
 			    var food_type = random_food();
 			    var f = food.create(lmargin + i * width, j * height, food_type);
+			    f.anchor.setTo(0.5,0.5);
+			    f.angle = Math.floor(Math.random() * 360);
 			    f.body.setSize(foodbounds[food_type].w, foodbounds[food_type].h, 10, 10);
 			    f.toString = create_tostring_function();
 			    f.scale.setTo(0.5,0.5);
