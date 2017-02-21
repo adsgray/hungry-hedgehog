@@ -516,6 +516,8 @@ Hungry = {
 		if (currently_shot_food.body.blocked.up || currently_shot_food.body.blocked.down
 		    || currently_shot_food.body.blocked.left || currently_shot_food.body.blocked.right) {
 		    play_sound("wallbounce");
+		    // when it bounces the rotation reverses! and also spins a bit faster
+		    currently_shot_food.body.angularVelocity = -1 * currently_shot_food.body.angularVelocity + 30;
 		}
 	    }
 	}
