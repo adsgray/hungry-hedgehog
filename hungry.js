@@ -13,6 +13,7 @@ Hungry = {
 	const SCORING_SIZE = 3;
 	const SHOT_FOOD_SPIN = 350; // angular velocity of shot food
 	const ACTION_DELAY = 2;
+	const ADJUST_DELAY = 8;
 
 	function create_tostring_function() {
 	    var id = hash_id;
@@ -132,7 +133,7 @@ Hungry = {
 
 	}
 
-	var game = new Phaser.Game(900, 640, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+	var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 	var foodobj;
 	var food;
 	var player_sprite;
@@ -472,6 +473,7 @@ Hungry = {
 	}
 
 	var actionDelayCount = 0;
+	var adjustDelayCount = 0;
 
 	function update() {
 	    //  Collide the player and the stars with the platforms
@@ -499,7 +501,9 @@ Hungry = {
 		    }
 		    player.angle -= 1;
 		    inc_fons_angle(-1);
-		    play_sound("adjust");
+		    if (adjustDelayCount++ % ADJUST_DELAY == 0) {
+			play_sound("adjust");
+		    }
 		    //console.log(player.angle);
 
 		}
@@ -513,7 +517,9 @@ Hungry = {
 		    }
 		    player.angle += 1;
 		    inc_fons_angle(1);
-		    play_sound("adjust");
+		    if (adjustDelayCount++ % ADJUST_DELAY == 0) {
+			play_sound("adjust");
+		    }
 		    //console.log(player.angle);
 
 		}
