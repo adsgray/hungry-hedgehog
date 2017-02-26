@@ -241,8 +241,12 @@ Hungry = {
 	    game.load.audio('foodland', 'assets/foodlandsound.mp3');
 	    game.load.audio('shoot', 'assets/leapoutsound.mp3');
 	    game.load.audio('eat', 'assets/eatfood1sound.mp3');
-	    //game.load.audio('adjust', 'assets/shaker.mp3');
 	    game.load.audio('adjust', 'assets/metaltickle.mp3');
+
+	    game.load.audio('fm1', 'assets/foodmove1.mp3');
+	    game.load.audio('fm2', 'assets/foodmove2.mp3');
+	    game.load.audio('fm3', 'assets/foodmove3.mp3');
+	    game.load.audio('fm4', 'assets/foodmove4.mp3');
 	}
 
 	function create() {
@@ -300,11 +304,23 @@ Hungry = {
 	    sounds["shoot"] = game.add.audio('shoot');
 	    sounds["eat"] = game.add.audio('eat');
 	    sounds["adjust"] = game.add.audio('adjust');
+
+	    sounds["fm1"] = game.add.audio('fm1');
+	    sounds["fm2"] = game.add.audio('fm2');
+	    sounds["fm3"] = game.add.audio('fm3');
+	    sounds["fm4"] = game.add.audio('fm4');
 	}
 
 	function play_sound(snd) {
 	    var sound = sounds[snd];
 	    sound.play();
+	}
+
+	function play_random_food_move_sound() {
+	    var snd = Math.floor(Math.random() * 4) + 1;
+	    var sndname = "fm" + snd;
+	    console.log("playing: " + sndname);
+	    play_sound(sndname);
 	}
 
 	var food_on_nose;
@@ -514,6 +530,8 @@ Hungry = {
 
 	    game.physics.arcade.overlap(currently_shot_food, foodobj.food, collideFood, null, this);
 
+	    do_food_wiggle(foodobj.food);
+
 	    if (shooting) {
 		if (currently_shot_food.body.blocked.up || currently_shot_food.body.blocked.down
 		    || currently_shot_food.body.blocked.left || currently_shot_food.body.blocked.right) {
@@ -522,6 +540,45 @@ Hungry = {
 		    currently_shot_food.body.angularVelocity = Math.floor(-1.3 * currently_shot_food.body.angularVelocity);
 		}
 	    }
+	}
+
+	var wiggle_chance = 0.5;
+	var wiggle_delay = 200;
+	var wct = 0;
+	function do_food_wiggle(sprites) {
+	    // you can access the children through playerHitGroup.children[0] and playerHitGroup.children[1] etc.
+	    if (wct++ % wiggle_delay != 0) {
+		return;
+	    }
+
+	    if (wct > 50000000) wct = 0;
+
+	    play_random_food_move_sound();
+
+	    var spritearray = sprites.children;
+	    var numsprites = sprites.children.length;
+	    for (var ct=0; ct < numsprites; ct++) {
+		// should maybe rename this funciton:
+		if (food_present_p(wiggle_chance)) {
+		    wiggle_sprite(spritearray[ct]);
+		}
+	    }
+
+	    // make the delay a little random
+	    var delay_delta = Math.floor(Math.random() * 50);
+	    if (food_present_p(0.5)) {
+		delay_delta = -1 * delay_delta;
+	    }
+	    wiggle_delay += delay_delta;
+	}
+
+	function wiggle_sprite(sprite) {
+	    //console.log("wiggling: " + sprite);
+	    var angle_delta = Math.floor(Math.random() * 10);
+	    if (food_present_p(0.5)) {
+		angle_delta = -1 * angle_delta;
+	    }
+	    sprite.angle += angle_delta;
 	}
 
 	function scoring_set_check(item) {
