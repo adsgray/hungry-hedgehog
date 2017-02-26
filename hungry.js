@@ -132,7 +132,7 @@ Hungry = {
 
 	}
 
-	var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+	var game = new Phaser.Game(900, 640, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 	var foodobj;
 	var food;
 	var player_sprite;
@@ -251,7 +251,8 @@ Hungry = {
 	    game.physics.startSystem(Phaser.Physics.ARCADE);
 
 	    //  A simple background for our game
-	    game.add.sprite(0, 0, 'sky');
+	   // game.add.sprite(0, 0, 'sky');
+	    game.stage.backgroundColor = "#4488AA";
 
 	    // The player and its settings
 	    player = game.add.sprite(375, game.world.height - 150, 'hedgehog');
@@ -459,6 +460,7 @@ Hungry = {
 	function update() {
 	    //  Collide the player and the stars with the platforms
 	    //var hitPlatform = game.physics.arcade.collide(player, platforms);
+	    // TODO: move this to create()
 	    cursors = game.input.keyboard.createCursorKeys();
 
 	    destroy_pending_sprites();
@@ -517,7 +519,7 @@ Hungry = {
 		    || currently_shot_food.body.blocked.left || currently_shot_food.body.blocked.right) {
 		    play_sound("wallbounce");
 		    // when it bounces the rotation reverses! and also spins a bit faster
-		    currently_shot_food.body.angularVelocity = -1 * currently_shot_food.body.angularVelocity + 30;
+		    currently_shot_food.body.angularVelocity = Math.floor(-1.3 * currently_shot_food.body.angularVelocity);
 		}
 	    }
 	}
